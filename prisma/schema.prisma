@@ -20,6 +20,19 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  sentMessages     Message[] @relation("sentMessages")
+  receivedMessages Message[] @relation("receivedMessages")
+}
+
+model Message {
+  id            Int      @id @default(autoincrement())
+  text          String
+  senderId      String   
+  receiverId    String   
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  sender        User   @relation(name: "sentMessages", fields: [senderId], references: [id])
+  receiver      User   @relation(name: "receivedMessages", fields: [receiverId], references: [id])
 }
 
 model Account {

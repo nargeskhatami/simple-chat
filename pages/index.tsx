@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function Home({ users }) {
   const { data: session } = useSession();
-  const [reciever, setReciever] = useState(null);
+  const [receiver, setReceiver] = useState(null);
   if (session) {
     return (
       <>
@@ -25,7 +25,7 @@ export default function Home({ users }) {
         </div>
 
         <div className="h-screen w-screen flex items-center justify-center">
-          {reciever ? <ChatRoom sender={session.user} reciever={reciever} /> : "Nothing to show"}
+          {receiver ? <ChatRoom sender={session.user} receiver={receiver} /> : "Nothing to show"}
         </div>
         <aside className="fixed left-0 top-0 h-screen border-r border-grey">
           <ul className="divide-y">
@@ -34,7 +34,7 @@ export default function Home({ users }) {
                 key={user.id}
                 className="transition-all flex items-center p-4 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setReciever(user);
+                  setReceiver(user);
                 }}
               >
                 <Image
@@ -67,12 +67,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
   let users = [];
   if (session) {
-    let data = await prisma.user.findMany({
-      include: {
-        sentMessages: true,
-        receivedMessages: true,
-      },
-    });
+    let data = await prisma.user.findMany();
     data.map((user) => {
       if (user.id !== session.user?.id) users.push(user);
     });

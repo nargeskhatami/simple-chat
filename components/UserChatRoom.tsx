@@ -40,14 +40,10 @@ export default function ChatRoom({
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["message", receiver.id]);
+        if (textareaRef.current) textareaRef.current.value = "";
       },
     }
   );
-
-  const handleSendMessage = () => {
-    if (textareaRef.current) textareaRef.current.value = "";
-    mutate();
-  };
 
   return (
     <div className="w-full h-full relative flex flex-col items-center">
@@ -73,17 +69,12 @@ export default function ChatRoom({
         <TextareaAutosize
           maxRows={5}
           ref={textareaRef}
-          onKeyPress={(e) => handleKeyPress(e, handleSendMessage)}
+          onKeyPress={(e) => handleKeyPress(e, mutate)}
           placeholder="Wtite a message..."
           className="w-full p-2 rounded-lg resize-none outline-0"
         />
-        <button className="flex items-center">
-          <IonIcon
-            name="send"
-            className="text-blue-600 px-4"
-            size="large"
-            onClick={() => handleSendMessage}
-          />
+        <button className="flex items-center" onClick={() => mutate()}>
+          <IonIcon name="send" className="text-blue-600 px-4" size="large" />
         </button>
       </div>
     </div>

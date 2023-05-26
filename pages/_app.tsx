@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// Create a client
+
 const queryClient = new QueryClient();
 
 import { SessionProvider } from "next-auth/react";

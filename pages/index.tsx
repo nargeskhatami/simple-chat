@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import { User } from "@/types/User";
 import { prisma } from "@/server/db/client";
+import Head from "next/head";
 
 export default function Home({ users }: { users: User[] }) {
   const { data: session } = useSession() as { data: Session };
@@ -18,6 +19,10 @@ export default function Home({ users }: { users: User[] }) {
 
   return (
     <>
+      <Head>
+        <title>Simple Chat</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <UsersList users={users} setReceiver={(user: User) => setReceiver(user)} />
       <div className="h-screen flex items-center justify-center w-[calc(100%-250px)]">
         {receiver ? (

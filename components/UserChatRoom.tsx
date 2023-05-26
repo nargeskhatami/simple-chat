@@ -23,8 +23,8 @@ export default function ChatRoom({
   };
   receiver: User;
 }) {
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [elementRef, height] = useElementHeight();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaWrapperRef, height] = useElementHeight();
 
   const queryClient = useQueryClient();
 
@@ -34,8 +34,8 @@ export default function ChatRoom({
 
   const { mutate, status: mutationStatus } = useMutation(
     () =>
-      inputRef.current
-        ? sendMessage(sender.id, receiver.id, inputRef.current.value)
+      textareaRef.current
+        ? sendMessage(sender.id, receiver.id, textareaRef.current.value)
         : Promise.reject(new Error("No message is entered")),
     {
       onSuccess: () => {
@@ -43,6 +43,11 @@ export default function ChatRoom({
       },
     }
   );
+
+  const handleSendMessage = () => {
+    if (textareaRef.current) textareaRef.current.value = "";
+    mutate();
+  };
 
   return (
     <div className="w-full h-full relative flex flex-col items-center">
@@ -62,13 +67,13 @@ export default function ChatRoom({
         </div>
       )}
       <div
-        ref={elementRef}
+        ref={textareaWrapperRef}
         className="bg-zinc-800 absolute bottom-0 left-0 right-0 flex items-center p-[16px]"
       >
         <TextareaAutosize
           maxRows={5}
-          ref={inputRef}
-          onKeyPress={(e) => handleKeyPress(e, mutate)}
+          ref={textareaRef}
+          onKeyPress={(e) => handleKeyPress(e, handleSendMessage)}
           placeholder="Wtite a message..."
           className="w-full p-2 rounded-lg resize-none outline-0"
         />
@@ -77,7 +82,7 @@ export default function ChatRoom({
             name="send"
             className="text-blue-600 px-4"
             size="large"
-            onClick={() => mutate()}
+            onClick={() => handleSendMessage}
           />
         </button>
       </div>

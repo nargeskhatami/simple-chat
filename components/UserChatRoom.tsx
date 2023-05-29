@@ -14,15 +14,16 @@ import { handleKeyPress } from "@/utils/eventHandlers";
 
 import ChatBubble from "./ChatBubble";
 
-export default function ChatRoom({
-  sender,
-  receiver,
-}: {
+type Props = {
   sender: DefaultUser & {
     id: string;
   };
   receiver: User;
-}) {
+};
+
+export default function ChatRoom(props: Props) {
+  const { sender, receiver } = props;
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaWrapperRef, height] = useElementHeight();
 

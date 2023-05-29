@@ -4,12 +4,13 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import IonIcon from "@reacticons/ionicons";
 
-export default function SignIn({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+export default function SignIn(props: Props) {
+  const { providers } = props;
+  
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
-      
       <h2 className="text-gray-100 font-semibold text-2xl">You are not signed in</h2>
       <span className="text-gray-400 p-6 whitespace-nowrap">Continue with</span>
 

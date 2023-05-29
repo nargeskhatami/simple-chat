@@ -2,15 +2,16 @@ import { DefaultUser } from "next-auth";
 
 import { Message } from "@/types/Message";
 
-export default function ChatBubble({
-  message,
-  sender,
-}: {
+type Props = {
   message: Message;
   sender: DefaultUser & {
     id: string;
   };
-}) {
+};
+
+export default function ChatBubble(props: Props) {
+  const { message, sender } = props;
+
   return (
     <div
       className={`${

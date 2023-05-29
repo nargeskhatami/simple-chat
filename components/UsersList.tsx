@@ -2,13 +2,14 @@ import { User } from "@/types/User";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 
-export default function UsersList({
-  users,
-  setReceiver,
-}: {
+type Props = {
   users: User[];
   setReceiver: Function;
-}) {
+};
+
+export default function UsersList(props: Props) {
+  const { users, setReceiver } = props;
+  
   return (
     <>
       <aside className="bg-zinc-800 w-[250px] fixed left-0 top-0 h-screen border-r border-zinc-700">

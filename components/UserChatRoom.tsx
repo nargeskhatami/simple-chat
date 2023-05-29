@@ -1,5 +1,5 @@
 import { DefaultUser } from "next-auth";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 import IonIcon from "@reacticons/ionicons";
 import TextareaAutosize from "react-textarea-autosize";
@@ -27,11 +27,11 @@ export default function ChatRoom(props: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaWrapperRef, height] = useElementHeight();
 
-  const queryClient = useQueryClient();
-
-  const { data: messages, status: queryStatus } = useQuery(["message", receiver.id], () =>
-    getMessages(sender.id, receiver.id)
-  );
+  const {
+    data: messages,
+    status: queryStatus,
+    refetch,
+  } = useQuery(["message", receiver.id], () => getMessages(sender.id, receiver.id));
 
   const { mutate, status: mutationStatus } = useMutation(
     () =>
@@ -40,7 +40,7 @@ export default function ChatRoom(props: Props) {
         : Promise.reject(new Error("No message is entered")),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["message", receiver.id]);
+        refetch();
         if (textareaRef.current) textareaRef.current.value = "";
       },
     }

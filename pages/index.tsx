@@ -77,7 +77,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       session,
-      users: JSON.parse(JSON.stringify(users)),
+      users,
     },
   };
 }
